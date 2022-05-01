@@ -7,35 +7,31 @@ import {
   BsSun,
   BsSnow,
 } from "react-icons/bs";
-import axios from "axios";
 import { DateBuilder } from "../components/DateBuilder";
+import {getWeather} from '../services/getWeather';
 
 function Landing() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.REACT_APP_WEATHER_KEY}`;
-
+ 
   const enter = (e) => {
     if (e.key === "Enter") {
       searchLocation();
     }
   };
+  const searchLocation = () => {
+		getWeather(location)
+		.then((data) => setData(data))
+		.catch((e)=>console.log(e) === alert('the location is invalid'));
+	};
 
-  const searchLocation = async () => {
-    try {
-      const response = await axios.get(url);
-
-      setData(response.data);
-    } catch (error) {
-      alert("the location is invalid");
-    }
-  };
 
   
   const handleChangeLocation = (e) => {
     setLocation(e.target.value);
   };
-
+ 
+  
   return (
     <div
       className={
@@ -48,6 +44,8 @@ function Landing() {
             ? "app app_rain"
             : data.weather[0].main === "Snow"
             ? "app app_snow"
+            : data.weather[0].main === "Haze"
+            ? "app app_haze"
             : data.weather[0].main === "Drizzle"
             ? "app app_drizzle"
             : data.weather[0].main === "Thunderstorm"

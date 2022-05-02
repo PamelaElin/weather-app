@@ -35,7 +35,7 @@ function Landing() {
             ? "app app_rain"
             : data.weather[0].main === "Snow"
             ? "app app_snow"
-            : data.weather[0].main === "Haze"
+            : data.weather[0].main === "Haze"||"Mist"||"Smooke"
             ? "app app_haze"
             : data.weather[0].main === "Drizzle"
             ? "app app_drizzle"
